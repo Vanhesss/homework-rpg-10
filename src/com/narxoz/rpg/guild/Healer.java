@@ -16,8 +16,9 @@ public class Healer extends GuildMember {
 
     @Override
     public void receive(String topic, GuildMember from, String payload) {
+        String sender = (from != null) ? from.getName() : "Council";
         System.out.println("  [Healer " + getName() + "] received topic='" + topic
-                + "' from " + from.getName() + ": " + payload);
+                + "' from " + sender + ": " + payload);
         switch (topic) {
             case "healing":
                 System.out.println("    -> Preparing healing potions and bandages.");

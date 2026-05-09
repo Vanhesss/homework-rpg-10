@@ -16,8 +16,9 @@ public class Captain extends GuildMember {
 
     @Override
     public void receive(String topic, GuildMember from, String payload) {
+        String sender = (from != null) ? from.getName() : "Council";
         System.out.println("  [Captain " + getName() + "] received topic='" + topic
-                + "' from " + from.getName() + ": " + payload);
+                + "' from " + sender + ": " + payload);
         switch (topic) {
             case "orders":
                 System.out.println("    -> Reviewing tactical orders.");

@@ -16,8 +16,9 @@ public class Scout extends GuildMember {
 
     @Override
     public void receive(String topic, GuildMember from, String payload) {
+        String sender = (from != null) ? from.getName() : "Council";
         System.out.println("  [Scout " + getName() + "] received topic='" + topic
-                + "' from " + from.getName() + ": " + payload);
+                + "' from " + sender + ": " + payload);
         switch (topic) {
             case "scouting":
                 System.out.println("    -> Mapping the area and checking for ambushes.");
