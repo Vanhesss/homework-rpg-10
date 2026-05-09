@@ -16,6 +16,27 @@ public class Captain extends GuildMember {
 
     @Override
     public void receive(String topic, GuildMember from, String payload) {
-        // TODO: react to a guild-hall message without calling another colleague directly.
+        System.out.println("  [Captain " + getName() + "] received topic='" + topic
+                + "' from " + from.getName() + ": " + payload);
+        switch (topic) {
+            case "orders":
+                System.out.println("    -> Reviewing tactical orders.");
+                break;
+            case "supplies":
+                System.out.println("    -> Noted supply status for mission planning.");
+                break;
+            case "scouting":
+                System.out.println("    -> Analyzing scout report for battle strategy.");
+                break;
+            case "healing":
+                System.out.println("    -> Adjusting formation based on healer capacity.");
+                break;
+            case "urgent":
+                System.out.println("    -> URGENT: Issuing emergency battle formations!");
+                break;
+            case "rewards":
+                System.out.println("    -> Approving reward distribution plan.");
+                break;
+        }
     }
 }

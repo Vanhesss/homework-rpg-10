@@ -16,6 +16,18 @@ public class Scout extends GuildMember {
 
     @Override
     public void receive(String topic, GuildMember from, String payload) {
-        // TODO: react to a guild-hall message without calling another colleague directly.
+        System.out.println("  [Scout " + getName() + "] received topic='" + topic
+                + "' from " + from.getName() + ": " + payload);
+        switch (topic) {
+            case "scouting":
+                System.out.println("    -> Mapping the area and checking for ambushes.");
+                break;
+            case "orders":
+                System.out.println("    -> Acknowledged order, preparing reconnaissance.");
+                break;
+            case "urgent":
+                System.out.println("    -> URGENT: Deploying fast scouts immediately!");
+                break;
+        }
     }
 }

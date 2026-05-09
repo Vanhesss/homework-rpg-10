@@ -16,6 +16,21 @@ public class Quartermaster extends GuildMember {
 
     @Override
     public void receive(String topic, GuildMember from, String payload) {
-        // TODO: react to a guild-hall message without calling another colleague directly.
+        System.out.println("  [Quartermaster " + getName() + "] received topic='" + topic
+                + "' from " + from.getName() + ": " + payload);
+        switch (topic) {
+            case "supplies":
+                System.out.println("    -> Preparing supply crates for the mission.");
+                break;
+            case "orders":
+                System.out.println("    -> Acknowledged order, checking inventory.");
+                break;
+            case "rewards":
+                System.out.println("    -> Counting gold and distributing rewards.");
+                break;
+            case "urgent":
+                System.out.println("    -> URGENT: Rushing emergency supplies!");
+                break;
+        }
     }
 }
