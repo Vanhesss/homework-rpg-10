@@ -1,0 +1,82 @@
+@startuml Mediator Pattern
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+
+interface GuildMediator {
+    + register(member: GuildMember): void
+    + dispatch(topic: String, from: GuildMember, payload: String): void
+}
+
+abstract class GuildMember {
+    - name: String
+    - mediator: GuildMediator
+    # GuildMember(name: String, mediator: GuildMediator)
+    + getName(): String
+    # getMediator(): GuildMediator
+    + {abstract} receive(topic: String, from: GuildMember, payload: String): void
+}
+
+class GuildHall {
+    - membersByTopic: Map<String, List<GuildMember>>
+    - totalMessagesRouted: int
+    - totalMembersNotified: int
+    + register(member: GuildMember): void
+    + dispatch(topic: String, from: GuildMember, payload: String): void
+    + getTotalMessagesRouted(): int
+    + getTotalMembersNotified(): int
+    # addSubscriber(topic: String, member: GuildMember): void
+    # subscribersFor(topic: String): List<GuildMember>
+}
+
+class Quartermaster {
+    + requestSupplies(topic: String, payload: String): void
+    + receive(topic: String, from: GuildMember, payload: String): void
+}
+
+class Scout {
+    + reportRoute(topic: String, payload: String): void
+    + receive(topic: String, from: GuildMember, payload: String): void
+}
+
+class Healer {
+    + prepareAid(topic: String, payload: String): void
+    + receive(topic: String, from: GuildMember, payload: String): void
+}
+
+class Captain {
+    + issueOrder(topic: String, payload: String): void
+    + receive(topic: String, from: GuildMember, payload: String): void
+}
+
+class Loremaster {
+    + shareLore(topic: String, payload: String): void
+    + receive(topic: String, from: GuildMember, payload: String): void
+}
+
+GuildMediator <|.. GuildHall
+GuildMember <|-- Quartermaster
+GuildMember <|-- Scout
+GuildMember <|-- Healer
+GuildMember <|-- Captain
+GuildMember <|-- Loremaster
+
+GuildMember --> GuildMediator : communicates via
+GuildHall o-- GuildMember : routes messages to
+
+note right of GuildHall
+  Topic-based routing.
+  Topics: orders, supplies, scouting,
+  healing, urgent, rewards, lore,
+  curse, history.
+  Sender is excluded from dispatch.
+end note
+
+note bottom of GuildMember
+  Colleagues never store references
+  to other concrete colleagues.
+  All cross-communication goes
+  through GuildMediator.dispatch().
+end note
+
+@enduml

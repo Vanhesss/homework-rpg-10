@@ -1,0 +1,95 @@
+@startuml Iterator Pattern
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+
+interface QuestIterator {
+    + hasNext(): boolean
+    + next(): Quest
+}
+
+class Quest {
+    - title: String
+    - priority: QuestPriority
+    - rewardGold: int
+    - urgent: boolean
+    + getTitle(): String
+    + getPriority(): QuestPriority
+    + getRewardGold(): int
+    + isUrgent(): boolean
+    + toString(): String
+}
+
+enum QuestPriority {
+    LOW
+    NORMAL
+    HIGH
+    URGENT
+}
+
+class QuestLog {
+    - quests: List<Quest>
+    + add(quest: Quest): void
+    + size(): int
+    + ordered(): QuestIterator
+    + reverse(): QuestIterator
+    + priorityAtLeast(threshold: QuestPriority): QuestIterator
+    + rewardSorted(): QuestIterator
+    ~ snapshot(): List<Quest>
+}
+
+class OrderedQuestIterator {
+    - snapshot: List<Quest>
+    - cursor: int
+    + hasNext(): boolean
+    + next(): Quest
+}
+
+class ReverseQuestIterator {
+    - snapshot: List<Quest>
+    - cursor: int
+    + hasNext(): boolean
+    + next(): Quest
+}
+
+class PriorityQuestIterator {
+    - snapshot: List<Quest>
+    - cursor: int
+    + hasNext(): boolean
+    + next(): Quest
+}
+
+class RewardSortedQuestIterator {
+    - snapshot: List<Quest>
+    - cursor: int
+    + hasNext(): boolean
+    + next(): Quest
+}
+
+QuestIterator <|.. OrderedQuestIterator
+QuestIterator <|.. ReverseQuestIterator
+QuestIterator <|.. PriorityQuestIterator
+QuestIterator <|.. RewardSortedQuestIterator
+
+QuestLog --> QuestIterator : creates
+QuestLog o-- Quest : stores
+Quest --> QuestPriority : uses
+
+OrderedQuestIterator ..> QuestLog : uses snapshot()
+ReverseQuestIterator ..> QuestLog : uses snapshot()
+PriorityQuestIterator ..> QuestLog : uses snapshot()
+RewardSortedQuestIterator ..> QuestLog : uses snapshot()
+
+note right of QuestLog
+  Aggregate root.
+  Internal List<Quest> is private.
+  Clients use QuestIterator only.
+  snapshot() is package-private.
+end note
+
+note bottom of QuestIterator
+  Custom interface.
+  Not java.util.Iterator.
+end note
+
+@enduml
