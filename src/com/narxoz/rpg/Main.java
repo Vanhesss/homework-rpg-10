@@ -6,6 +6,7 @@ import com.narxoz.rpg.council.CouncilRunResult;
 import com.narxoz.rpg.guild.Captain;
 import com.narxoz.rpg.guild.GuildHall;
 import com.narxoz.rpg.guild.Healer;
+import com.narxoz.rpg.guild.Loremaster;
 import com.narxoz.rpg.guild.Quartermaster;
 import com.narxoz.rpg.guild.Scout;
 import com.narxoz.rpg.quest.Quest;
@@ -64,6 +65,12 @@ public class Main {
             System.out.println("  " + priority.next());
         }
 
+        System.out.println("\n--- Quests sorted by reward (RewardSortedQuestIterator) ---");
+        QuestIterator rewardSorted = questLog.rewardSorted();
+        while (rewardSorted.hasNext()) {
+            System.out.println("  " + rewardSorted.next());
+        }
+
         // 4. Show Mediator pattern
         System.out.println("\n========================================");
         System.out.println("  MEDIATOR PATTERN DEMONSTRATION");
@@ -74,6 +81,8 @@ public class Main {
         Scout scout = new Scout("Lyra", hall);
         Healer healer = new Healer("Mira", hall);
         Captain captain = new Captain("General Thane", hall);
+
+        Loremaster loremaster = new Loremaster("Sage Orin", hall);
 
         System.out.println("\n--- Captain issues an order ---");
         captain.issueOrder("orders", "All units prepare for the dragon hunt!");
@@ -86,6 +95,12 @@ public class Main {
 
         System.out.println("\n--- Healer prepares aid ---");
         healer.prepareAid("healing", "Anti-venom and burn salves are ready.");
+
+        System.out.println("\n--- Loremaster shares lore ---");
+        loremaster.shareLore("lore", "Ancient texts mention a dragon weakness to frost magic.");
+
+        System.out.println("\n--- Loremaster warns about curse ---");
+        loremaster.shareLore("curse", "The Cursed Ruins carry a life-drain hex.");
 
         System.out.println("\n--- Urgent dispatch ---");
         captain.issueOrder("urgent", "Dragon spotted near the eastern ridge!");
@@ -100,6 +115,7 @@ public class Main {
         new Scout("Lyra", councilHall);
         new Healer("Mira", councilHall);
         new Captain("General Thane", councilHall);
+        new Loremaster("Sage Orin", councilHall);
 
         CouncilEngine engine = new CouncilEngine();
         CouncilRunResult result = engine.runCouncil(party, questLog, councilHall);
